@@ -3,6 +3,7 @@ var path = require('path');
 module.exports = function(fis, isMount, options) {
     var appName = options.name || 'default';
     var deploy = options.deploy;
+    var useSmartyPlugin = options.useSmartyPlugin;
 
     var matchRules = {
         '*.{html,ro,tpl}': {
@@ -34,6 +35,15 @@ module.exports = function(fis, isMount, options) {
             scale: 0.5,
             packTo: '/static/elements-all.css'
         },
+        '{*.less, *.ro:less}': {
+            parser: fis.plugin('less', {
+                // options...
+            }),
+            rExt: '.css',
+            useSprite: true,
+            scale: 0.5,
+            packTo: '/static/elements-all.css'
+        },
         '*.css': {
             packTo: '/static/elements-all.css',
             packOrder: -100
@@ -57,7 +67,7 @@ module.exports = function(fis, isMount, options) {
             // fis-optimizer-uglify-js 插件进行压缩，已内置
             optimizer: fis.plugin('uglify-js')
         },
-        '{*.css,*.sass,*.scss}': {
+        '{*.css,*.less,*.sass,*.scss}': {
             // fis-optimizer-clean-css 插件进行压缩，已内置
             optimizer: fis.plugin('clean-css')
         },
@@ -79,7 +89,9 @@ module.exports = function(fis, isMount, options) {
     function mount() {
         // smarty
         fis.set('system.localNPMFolder', path.join(__dirname, 'node_modules'));
-        fis.require('smarty')(fis);
+        if (useSmartyPlugin) {
+            fis.require('smarty')(fis);
+        }
 
         fis.set('project.ignore', [
             'node_modules/**',
