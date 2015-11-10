@@ -4,6 +4,7 @@ module.exports = function(fis, isMount, options) {
     var appName = options.name || 'default';
     var deploy = options.deploy;
     var useSmartyPlugin = options.useSmartyPlugin;
+    var domain = options.domain || '';
 
     var matchRules = {
         '*.{html,ro,tpl}': {
@@ -74,6 +75,9 @@ module.exports = function(fis, isMount, options) {
         '*.png': {
             // fis-optimizer-png-compressor 插件进行压缩，已内置
             optimizer: fis.plugin('png-compressor')
+        },
+        '*': {
+            domain: domain
         }
     };
 
