@@ -6,7 +6,7 @@ module.exports = function(fis, isMount, options) {
     var useSmartyPlugin = options.useSmartyPlugin;
     var domain = options.domain || '';
 
-    var matchRules = {
+    var matchRulesWithPlugin = {
         '*.{html,ro,tpl}': {
             parser: fis.plugin('rosetta', {
                 compileUsage: false
@@ -23,6 +23,67 @@ module.exports = function(fis, isMount, options) {
             standard: false
         },
         '::packager': {
+            spriter: fis.plugin('csssprites', {
+                scale: 0.5
+            })
+        },
+        '{*.scss, *.ro:scss, *.sass, *.ro:sass}': {
+            parser: fis.plugin('node-sass', {
+                // options...
+            }),
+            rExt: '.css',
+            useSprite: true,
+            scale: 0.5,
+            packTo: '/static/elements-all.css'
+        },
+        '{*.less, *.ro:less}': {
+            parser: fis.plugin('less', {
+                // options...
+            }),
+            rExt: '.css',
+            useSprite: true,
+            scale: 0.5,
+            packTo: '/static/elements-all.css'
+        },
+        '*.css': {
+            packTo: '/static/elements-all.css',
+            packOrder: -100
+        },
+        '*': {
+            release: '/static/' + appName + '/$0'
+        },
+        'map.json': {
+            release: '/config/' + appName + '/$0'
+        },
+        '*.php': {
+            release: '$0'
+        },
+        '*.tpl': {
+            release: '/template/' + appName + '/$0'
+        }
+    };
+
+    var matchRulesWithoutPlugin = {
+        '*.{html,ro,tpl}': {
+            parser: fis.plugin('rosetta', {
+                compileUsage: false
+            }),
+            useMap: true,
+            url: '$1' // 这个比较重要
+        },
+        'r-*.{ro,html}': {
+            rExt: '.js'
+        },
+        '*/Rosetta.js': {
+            isMod: false,
+            standard: false
+        },
+        '::packager': {
+            postpackager: fis.plugin('rosetta', {
+                allInOne: true,
+                left_delimiter: '{%',
+                right_delimiter: '%}'
+            }),
             spriter: fis.plugin('csssprites', {
                 scale: 0.5
             })
@@ -108,9 +169,17 @@ module.exports = function(fis, isMount, options) {
 
         fis.set('project.fileType.text', 'ro');
 
-        fis.util.map(matchRules, function(selector, rules) {
-            fis.match(selector, rules);
-        });
+        if (useSmartyPlugin) {
+            fis.util.map(matchRulesWithPlugin, function(selector, rules) {
+                fis.match(selector, rules);
+            });
+        } else {
+            fis.util.map(matchRulesWithoutPlugin, function(selector, rules) {
+                fis.match(selector, rules);
+            });
+        }
+
+
 
         var debug = fis.media('debug');
         fis.util.map(debugMatchRules, function(selector, rules) {
