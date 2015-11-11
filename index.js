@@ -179,7 +179,6 @@ module.exports = function(fis, isMount, options) {
             });
         }
 
-
         var debug = fis.media('debug');
         fis.util.map(debugMatchRules, function(selector, rules) {
             debug.match(selector, rules);
