@@ -80,7 +80,7 @@ module.exports = function(fis, isMount, options) {
         },
         '::packager': {
             postpackager: fis.plugin('rosetta', {
-                allInOne: true,
+                allInOne: false,
                 left_delimiter: '{%',
                 right_delimiter: '%}'
             }),
@@ -180,7 +180,6 @@ module.exports = function(fis, isMount, options) {
         }
 
 
-
         var debug = fis.media('debug');
         fis.util.map(debugMatchRules, function(selector, rules) {
             debug.match(selector, rules);
@@ -198,6 +197,7 @@ module.exports = function(fis, isMount, options) {
 
     return {
         loadPath: path.join(__dirname, 'node_modules'),
-        matchRules: matchRules
+        matchRulesWithPlugin: matchRulesWithPlugin,
+        matchRulesWithoutPlugin: matchRulesWithoutPlugin
     }
 }
