@@ -1,6 +1,6 @@
 {
     "name": "fis3-rosetta-plugin-package",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "fis3 plugins package for above rosetta 1.0.2",
     "main": "index.js",
     "scripts": {
@@ -21,11 +21,11 @@
         "url": "https://github.com/jiexuangao/fis3-rosetta-plugin-package/issues"
     },
     "dependencies": {
-        "fis3-smarty": "^1.1.6",
-        "fis3-parser-rosetta": "^2.0.4",
-        "fis3-postpackager-rosetta": "^2.0.0",
-        "fis3-preprocessor-rosetta-import": "^1.0.0",
-        "fis-postprocessor-jswrapper": "^0.0.14"
+        "fis3-smarty": "1.1.6",
+        "fis3-parser-rosetta": "2.0.4",
+        "fis3-postpackager-rosetta": "2.0.0",
+        "fis3-preprocessor-rosetta-import": "1.0.0",
+        "fis-postprocessor-jswrapper": "0.0.14"
     },
     "homepage": "https://github.com/jiexuangao/fis3-rosetta-plugin-package"
 }
